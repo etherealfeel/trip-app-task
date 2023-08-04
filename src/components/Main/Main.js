@@ -4,21 +4,14 @@ import useForecastData from '../../hooks/useForecastData';
 import { useState, useEffect } from 'react';
 import Countdown from 'react-countdown';
 import { splitDate } from '../../utils/splitDate';
-import tripPreview from '../../images/trip_tokyo.jfif';
 import { weekdays } from '../../mocks/weekdays';
 import { IoMdCreate } from 'react-icons/io';
 import Modal from '../Modal';
 import Form from '../Modal/Form';
+import { getTrips, saveTrips } from '../../utils/dataStorage';
 
 const Main = () => {
-  const [trips, setTrips] = useState([
-    {
-      city: 'Tokyo',
-      startDate: '26.08.2023',
-      endDate: '30.08.2023',
-      imgUrl: tripPreview,
-    },
-  ]);
+  const [trips, setTrips] = useState(getTrips());
   const [selectedTrip, setSelectedTrip] = useState(trips[0]);
   const [filteredTrips, setFilteredTrips] = useState(trips);
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,32 +21,9 @@ const Main = () => {
   const { data, loading, error } = useForecastData(apiTodayUrl);
   const { data: weekData, loading: weekLoading, error: weekError } = useForecastData(apiFromToUrl, false);
 
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      return <div>Your trip has began!</div>;
-    } else {
-      return (
-        <ul className="selected-countdown">
-          <li className="countdown-item">
-            <h4 className="countdown-item-number">{days}</h4>
-            <p className="countdown-item-name">days</p>
-          </li>
-          <li className="countdown-item">
-            <h4 className="countdown-item-number">{hours}</h4>
-            <p className="countdown-item-name">hours</p>
-          </li>
-          <li className="countdown-item">
-            <h4 className="countdown-item-number">{minutes}</h4>
-            <p className="countdown-item-name">minutes</p>
-          </li>
-          <li className="countdown-item">
-            <h4 className="countdown-item-number">{seconds}</h4>
-            <p className="countdown-item-name">seconds</p>
-          </li>
-        </ul>
-      );
-    }
-  };
+  useEffect(() => {
+    saveTrips(trips);
+  }, [trips]);
 
   const handleTripClick = (i) => {
     setSelectedTrip(trips[i]);
@@ -81,6 +51,33 @@ const Main = () => {
       filteredList = filteredTrips.filter((item) => item.city.toLowerCase().includes(value.toLowerCase()));
     }
     setFilteredTrips(filteredList);
+  };
+
+  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      return <div>Your trip has already began!</div>;
+    } else {
+      return (
+        <ul className="selected-countdown">
+          <li className="countdown-item">
+            <h4 className="countdown-item-number">{days}</h4>
+            <p className="countdown-item-name">days</p>
+          </li>
+          <li className="countdown-item">
+            <h4 className="countdown-item-number">{hours}</h4>
+            <p className="countdown-item-name">hours</p>
+          </li>
+          <li className="countdown-item">
+            <h4 className="countdown-item-number">{minutes}</h4>
+            <p className="countdown-item-name">minutes</p>
+          </li>
+          <li className="countdown-item">
+            <h4 className="countdown-item-number">{seconds}</h4>
+            <p className="countdown-item-name">seconds</p>
+          </li>
+        </ul>
+      );
+    }
   };
 
   if (loading || weekLoading) {
@@ -117,21 +114,22 @@ const Main = () => {
             </div>
             <div className="forecast-trips-container">
               <ul className="forecast-trips">
-                {filteredTrips.map((trip, i) => (
-                  <li
-                    className={`forecast-trip${selectedTrip === trips[i] ? '--selected' : ''}`}
-                    key={i}
-                    onClick={() => handleTripClick(i)}
-                  >
-                    <img className="trip-preview" alt="trip" src={trip.imgUrl} width={200} height={200} />
-                    <div className="trip-bottom">
-                      <h4 className="trip-title title">{trip.city}</h4>
-                      <p className="trip-descr">
-                        {trip.startDate} - {trip.endDate}
-                      </p>
-                    </div>
-                  </li>
-                ))}
+                {filteredTrips &&
+                  filteredTrips.map((trip, i) => (
+                    <li
+                      className={`forecast-trip${selectedTrip === trips[i] ? '--selected' : ''}`}
+                      key={i}
+                      onClick={() => handleTripClick(i)}
+                    >
+                      <img className="trip-preview" alt="trip" src={trip.imgUrl} width={200} height={200} />
+                      <div className="trip-bottom">
+                        <h4 className="trip-title title">{trip.city}</h4>
+                        <p className="trip-descr">
+                          {trip.startDate} - {trip.endDate}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
                 <li className="trip-new forecast-trip" onClick={() => setModalActive(true)}>
                   <h4>Add trip</h4>
                   <IoMdCreate size={32} />

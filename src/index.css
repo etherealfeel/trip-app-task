@@ -18,6 +18,7 @@ ol, ul {
 	list-style: none;
 }
 
-input::placeholder {
+button, input, input::placeholder {
 	font-family: 'Montserrat', sans-serif;
+	font-size: 16px;
 }
