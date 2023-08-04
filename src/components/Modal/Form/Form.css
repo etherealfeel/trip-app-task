@@ -1,0 +1,45 @@
+.form-fields {
+    text-align: start;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.field-label {
+    margin-bottom: 10px;
+}
+
+.field-input {
+    padding: 10px;
+    outline: none;
+    border: 1px solid #cfcfcf;
+}
+
+.form-btns {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
+.form-btn {
+    padding: 10px 15px;
+    background-color: #fff;
+    border: 1px solid #cfcfcf;
+    cursor: pointer;
+}
+
+.btn-done {
+    background-color: rgb(12, 100, 200);
+    color: #fff;
+}
+
+.required {
+    color: red;
+    margin-left: 10px;
+}
