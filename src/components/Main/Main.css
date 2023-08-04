@@ -179,8 +179,45 @@
     margin: 0 auto;
 }
 
+.selected-auth {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-signin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-btn {
+    padding: 5px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+	font-size: 18px;
+    color: #fff;
+    background-color: #000;
+    border: none;
+    border-radius: 20px;
+}
+
+.auth-icon {
+    margin-left: 5px;
+}
+
+.auth-email--underlined {
+    text-decoration: underline;
+}
+
 .selected-day {
-    margin-top: 60%;
+    margin-top: 50%;
     text-align: center;
     font-size: 48px;
     margin-bottom: 20px;

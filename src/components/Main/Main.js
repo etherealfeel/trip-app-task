@@ -11,11 +11,16 @@ import Form from '../Modal/Form';
 import { getTrips, saveTrips } from '../../utils/dataStorage';
 import { GrLinkNext } from 'react-icons/gr';
 import { GrLinkPrevious } from 'react-icons/gr';
+import { auth, provider } from '../../config/firebaseConfig';
+import { signInWithPopup } from 'firebase/auth';
+import { FcGoogle } from 'react-icons/fc';
+import { FiLogOut } from 'react-icons/fi';
 
 const Main = () => {
+  const [email, setEmail] = useState('');
   const [trips, setTrips] = useState(getTrips());
-  const [selectedTrip, setSelectedTrip] = useState(trips[0]);
   const [filteredTrips, setFilteredTrips] = useState(trips);
+  const [selectedTrip, setSelectedTrip] = useState(filteredTrips[filteredTrips.length - 1]);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalActive, setModalActive] = useState(false);
   const apiTodayUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${selectedTrip.city}/today?unitGroup=metric&include=days&iconSet=icons2&key=${process.env.REACT_APP_WEATHER_API_KEY}&contentType=json`;
@@ -64,6 +69,24 @@ const Main = () => {
   const handleNext = () => {
     const container = containerRef.current;
     container.scrollLeft += container.clientWidth;
+  };
+
+  const handleAuth = () => {
+    signInWithPopup(auth, provider)
+      .then((data) => {
+        setEmail(data.user.email);
+      })
+      .catch((error) => {
+        if (error.code === 'auth/cancelled-popup-request') {
+          console.log('Popup was closed or user cancelled the sign-in process.');
+        } else {
+          console.log('Login failed!', error);
+        }
+      });
+  };
+
+  const handleLogout = () => {
+    window.location.reload();
   };
 
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
@@ -151,10 +174,10 @@ const Main = () => {
             </div>
             <div className="trips-btns">
               <div className="trips-btn trips-btn--prev">
-                <GrLinkPrevious onClick={handlePrev} />
+                <GrLinkPrevious onClick={handlePrev} size={24} />
               </div>
               <div className="trips-btn trips-btn--next">
-                <GrLinkNext onClick={handleNext} />
+                <GrLinkNext onClick={handleNext} size={24} />
               </div>
             </div>
           </main>
@@ -184,6 +207,23 @@ const Main = () => {
       </div>
       <div className="trip-selected">
         <div className="selected-container">
+          <div className="selected-auth">
+            {email ? (
+              <div className="auth-signin">
+                <p className="auth-email">
+                  Sign in as <span className="auth-email--underlined">{email}</span>
+                </p>
+                <button onClick={handleLogout} className="auth-btn">
+                  Sign out
+                  <FiLogOut className="auth-icon" size={20} />
+                </button>
+              </div>
+            ) : (
+              <button onClick={handleAuth} className="auth-btn">
+                Continue with Google <FcGoogle className="auth-icon" size={20} />
+              </button>
+            )}
+          </div>
           {data.days ? (
             <>
               <h3 className="selected-day">{weekdays[new Date(data.days[0].datetime).getDay()]}</h3>
