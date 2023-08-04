@@ -7,6 +7,7 @@ import { splitDate } from '../../utils/splitDate';
 import tripPreview from '../../images/trip_tokyo.jfif';
 import { weekdays } from '../../mocks/weekdays';
 import { IoMdCreate } from 'react-icons/io';
+import Modal from '../Modal';
 
 const Main = () => {
   const [trips, setTrips] = useState([
@@ -88,9 +89,11 @@ const Main = () => {
   }
   return (
     <div className="forecast">
-      {/* <Modal active={modalActive} setActive={setModalActive}> */}
-      <div className="modal-content">{/* <Form setModal={setModalActive} onTripCreate={handleTripCreate} /> */}</div>
-      {/* </Modal> */}
+      <Modal active={modalActive} setActive={setModalActive}>
+        <div className="modal-content">
+          {/* <Form setModal={setModalActive} onTripCreate={handleTripCreate} /> */}
+        </div>
+      </Modal>
       <div className="forecast-panel">
         <div className="forecast-container">
           <header className="forecast-header">
