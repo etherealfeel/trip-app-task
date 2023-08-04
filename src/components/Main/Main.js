@@ -1,7 +1,7 @@
 import './Main.css';
 import { BsSearchHeart } from 'react-icons/bs';
 import useForecastData from '../../hooks/useForecastData';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Countdown from 'react-countdown';
 import { splitDate } from '../../utils/splitDate';
 import { weekdays } from '../../mocks/weekdays';
@@ -9,6 +9,8 @@ import { IoMdCreate } from 'react-icons/io';
 import Modal from '../Modal';
 import Form from '../Modal/Form';
 import { getTrips, saveTrips } from '../../utils/dataStorage';
+import { GrLinkNext } from 'react-icons/gr';
+import { GrLinkPrevious } from 'react-icons/gr';
 
 const Main = () => {
   const [trips, setTrips] = useState(getTrips());
@@ -20,6 +22,7 @@ const Main = () => {
   const apiFromToUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${selectedTrip.city}/2023-08-03/2023-08-10?unitGroup=metric&include=days&iconSet=icons2&key=${process.env.REACT_APP_WEATHER_API_KEY}&contentType=json`;
   const { data, loading, error } = useForecastData(apiTodayUrl);
   const { data: weekData, loading: weekLoading, error: weekError } = useForecastData(apiFromToUrl, false);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     saveTrips(trips);
@@ -51,6 +54,16 @@ const Main = () => {
       filteredList = filteredTrips.filter((item) => item.city.toLowerCase().includes(value.toLowerCase()));
     }
     setFilteredTrips(filteredList);
+  };
+
+  const handlePrev = () => {
+    const container = containerRef.current;
+    container.scrollLeft -= container.clientWidth;
+  };
+
+  const handleNext = () => {
+    const container = containerRef.current;
+    container.scrollLeft += container.clientWidth;
   };
 
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
@@ -112,7 +125,7 @@ const Main = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="forecast-trips-container">
+            <div className="forecast-trips-container" ref={containerRef}>
               <ul className="forecast-trips">
                 {filteredTrips &&
                   filteredTrips.map((trip, i) => (
@@ -131,19 +144,28 @@ const Main = () => {
                     </li>
                   ))}
                 <li className="trip-new forecast-trip" onClick={() => setModalActive(true)}>
-                  <h4>Add trip</h4>
+                  <p>Add trip</p>
                   <IoMdCreate size={32} />
                 </li>
               </ul>
             </div>
+            <div className="trips-btns">
+              <div className="trips-btn trips-btn--prev">
+                <GrLinkPrevious onClick={handlePrev} />
+              </div>
+              <div className="trips-btn trips-btn--next">
+                <GrLinkNext onClick={handleNext} />
+              </div>
+            </div>
           </main>
           <div className="forecast-weekly">
             <h3 className="weekly-title title">Week</h3>
+            <hr />
             <ul className="weekly-list">
               {weekData &&
                 weekData.days?.map((day, i) => (
                   <li className="weekly-item" key={i}>
-                    <h4 className="item-day">{weekdays[new Date(day.datetime).getDay()]}</h4>
+                    <h4 className="item-day title">{weekdays[new Date(day.datetime).getDay()]}</h4>
                     <img
                       src={`https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/2nd%20Set%20-%20Color/${day.icon}.png`}
                       alt="weathertype"
