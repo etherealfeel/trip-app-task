@@ -29,7 +29,7 @@ const Main = () => {
   }, [trips]);
 
   const handleTripClick = (i) => {
-    setSelectedTrip(trips[i]);
+    setSelectedTrip(filteredTrips[i]);
   };
 
   const handleTripCreate = (newTrip, imgUrl) => {
