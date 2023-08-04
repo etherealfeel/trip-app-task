@@ -65,8 +65,10 @@ const Main = () => {
   };
 
   useEffect(() => {
-    const filteredItems = trips.filter((item) => item.city.toLowerCase().includes(searchTerm.toLowerCase()));
-    setFilteredTrips(filteredItems);
+    const filteredAndSortedData = trips
+      .filter((item) => item.city.toLowerCase().includes(searchTerm.toLowerCase()))
+      .sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+    setFilteredTrips(filteredAndSortedData);
   }, [trips, searchTerm]);
 
   const handleInputChange = (e) => {
