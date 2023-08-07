@@ -5,8 +5,8 @@ const EMAIL_DATA_KEY = 'email';
 const initialData = [
   {
     city: 'Tokyo',
-    startDate: '26.08.2023',
-    endDate: '30.08.2023',
+    startDate: '29.08.2023',
+    endDate: '31.08.2023',
     imgUrl: tripPreview,
   },
 ];

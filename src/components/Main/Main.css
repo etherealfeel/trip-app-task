@@ -154,6 +154,9 @@
     align-items: center;
     gap: 20px;
     margin-bottom: 50px;
+    @media (max-width: 767px) {
+        display: none;
+    }
 }
 
 .trips-btn {
