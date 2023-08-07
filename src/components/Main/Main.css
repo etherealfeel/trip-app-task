@@ -19,10 +19,9 @@
 }
 
 .forecast-panel {
-    flex: .6;
+    flex: .7;
     margin-top: 40px;
     padding: 10px 40px;
-
 }
 
 .forecast-header {
@@ -51,8 +50,6 @@
     background-color: inherit;
     margin-left: 10px;
     width: 100%;
-
-
 }
 
 .forecast-trips-container {
@@ -211,7 +208,7 @@
 }
 
 .trip-selected {
-    flex: .4;
+    flex: .3;
     background: url('../../images/selected_bg.png');
     background-repeat: no-repeat;
     background-size: cover;

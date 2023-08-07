@@ -8,7 +8,7 @@ import { weekdays } from '../../mocks/weekdays';
 import { IoMdCreate } from 'react-icons/io';
 import Modal from '../Modal';
 import Form from '../Modal/Form';
-import { getTrips, saveTrips } from '../../utils/dataStorage';
+import { getTrips, saveTrips, getEmail, setEmail, saveEmail } from '../../utils/dataStorage';
 import { GrLinkNext } from 'react-icons/gr';
 import { GrLinkPrevious } from 'react-icons/gr';
 import { auth, provider } from '../../config/firebaseConfig';
@@ -17,7 +17,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FiLogOut } from 'react-icons/fi';
 
 const Main = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(getEmail());
   const [trips, setTrips] = useState(getTrips());
   const [filteredTrips, setFilteredTrips] = useState(trips);
   const [selectedTrip, setSelectedTrip] = useState(trips[filteredTrips.length - 1]);
@@ -75,6 +75,7 @@ const Main = () => {
     signInWithPopup(auth, provider)
       .then((data) => {
         setEmail(data.user.email);
+        saveEmail(data.user.email);
       })
       .catch((error) => {
         if (error.code === 'auth/cancelled-popup-request') {
@@ -86,6 +87,7 @@ const Main = () => {
   };
 
   const handleLogout = () => {
+    saveEmail('');
     window.location.reload();
   };
 

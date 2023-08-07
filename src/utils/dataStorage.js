@@ -1,5 +1,6 @@
 import tripPreview from '../images/trip_tokyo.jfif';
-const DATA_KEY = 'trips';
+const TRIPS_DATA_KEY = 'trips';
+const EMAIL_DATA_KEY = 'email';
 
 const initialData = [
   {
@@ -11,10 +12,18 @@ const initialData = [
 ];
 
 export const saveTrips = (trips) => {
-  localStorage.setItem(DATA_KEY, JSON.stringify(trips));
+  localStorage.setItem(TRIPS_DATA_KEY, JSON.stringify(trips));
+};
+
+export const saveEmail = (email) => {
+  localStorage.setItem(EMAIL_DATA_KEY, email);
 };
 
 export const getTrips = () => {
-  const savedTrips = localStorage.getItem(DATA_KEY);
+  const savedTrips = localStorage.getItem(TRIPS_DATA_KEY);
   return savedTrips ? JSON.parse(savedTrips) : initialData;
+};
+
+export const getEmail = () => {
+  return localStorage.getItem(EMAIL_DATA_KEY);
 };
