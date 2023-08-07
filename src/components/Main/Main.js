@@ -20,7 +20,7 @@ const Main = () => {
   const [email, setEmail] = useState('');
   const [trips, setTrips] = useState(getTrips());
   const [filteredTrips, setFilteredTrips] = useState(trips);
-  const [selectedTrip, setSelectedTrip] = useState(filteredTrips[filteredTrips.length - 1]);
+  const [selectedTrip, setSelectedTrip] = useState(trips[filteredTrips.length - 1]);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalActive, setModalActive] = useState(false);
   const apiTodayUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${selectedTrip.city}/today?unitGroup=metric&include=days&iconSet=icons2&key=${process.env.REACT_APP_WEATHER_API_KEY}&contentType=json`;
@@ -153,7 +153,7 @@ const Main = () => {
                 {filteredTrips &&
                   filteredTrips.map((trip, i) => (
                     <li
-                      className={`forecast-trip${selectedTrip === trips[i] ? '--selected' : ''}`}
+                      className={`forecast-trip${selectedTrip === filteredTrips[i] ? '--selected' : ''}`}
                       key={i}
                       onClick={() => handleTripClick(i)}
                     >
@@ -225,7 +225,7 @@ const Main = () => {
             )}
           </div>
           {data.days ? (
-            <>
+            <div className="selected-info">
               <h3 className="selected-day">{weekdays[new Date(data.days[0].datetime).getDay()]}</h3>
               <div className="selected-weather">
                 <img
@@ -237,7 +237,7 @@ const Main = () => {
                 />
                 <p className="selected-temp">{data.days[0].temp}°C</p>
               </div>
-            </>
+            </div>
           ) : (
             <p>Loading..</p>
           )}

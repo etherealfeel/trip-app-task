@@ -16,6 +16,7 @@ const Form = ({ setModal, onTripCreate }) => {
     maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + 15);
   const [formData, setFormData] = useState(initialFormData);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
