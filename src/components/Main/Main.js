@@ -15,6 +15,7 @@ import { auth, provider } from '../../config/firebaseConfig';
 import { signInWithPopup } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { FiLogOut } from 'react-icons/fi';
+import Loader from '../Loader';
 
 const Main = () => {
   const [email, setEmail] = useState(getEmail());
@@ -119,7 +120,7 @@ const Main = () => {
   };
 
   if (loading || weekLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (error || weekError) {
