@@ -2,13 +2,13 @@ import './Main.css';
 import { BsSearchHeart } from 'react-icons/bs';
 import useForecastData from '../../hooks/useForecastData';
 import { useState, useEffect, useRef } from 'react';
-import Countdown from 'react-countdown';
+import CountdownTimer from '../Main/CountdownTimer';
 import { splitDate } from '../../utils/splitDate';
 import { weekdays } from '../../mocks/weekdays';
 import { IoMdCreate } from 'react-icons/io';
 import Modal from '../Modal';
 import Form from '../Modal/Form';
-import { getTrips, saveTrips, getEmail, setEmail, saveEmail } from '../../utils/dataStorage';
+import { getTrips, saveTrips, getEmail, saveEmail } from '../../utils/dataStorage';
 import { GrLinkNext } from 'react-icons/gr';
 import { GrLinkPrevious } from 'react-icons/gr';
 import { auth, provider } from '../../config/firebaseConfig';
@@ -90,33 +90,6 @@ const Main = () => {
   const handleLogout = () => {
     saveEmail('');
     window.location.reload();
-  };
-
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      return <div>Your trip has already began!</div>;
-    } else {
-      return (
-        <ul className="selected-countdown">
-          <li className="countdown-item">
-            <h4 className="countdown-item-number">{days}</h4>
-            <p className="countdown-item-name">days</p>
-          </li>
-          <li className="countdown-item">
-            <h4 className="countdown-item-number">{hours}</h4>
-            <p className="countdown-item-name">hours</p>
-          </li>
-          <li className="countdown-item">
-            <h4 className="countdown-item-number">{minutes}</h4>
-            <p className="countdown-item-name">minutes</p>
-          </li>
-          <li className="countdown-item">
-            <h4 className="countdown-item-number">{seconds}</h4>
-            <p className="countdown-item-name">seconds</p>
-          </li>
-        </ul>
-      );
-    }
   };
 
   if (loading || weekLoading) {
@@ -245,7 +218,7 @@ const Main = () => {
             <p>Loading..</p>
           )}
           <p className="selected-location">{data?.resolvedAddress} </p>
-          <Countdown date={new Date(...Object.values(splitDate(selectedTrip.startDate)))} renderer={renderer} />
+          <CountdownTimer date={new Date(...Object.values(splitDate(selectedTrip.startDate)))} />
         </div>
       </div>
     </div>
